@@ -1,24 +1,16 @@
-#include <fstream>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
-
-//C++14 and Boost
-auto f() noexcept
-{
-  boost::adjacency_list<> g;
-  boost::add_vertex(g);
-  return boost::num_vertices(g);
-}
-
+#pragma GCC diagnostic pop
 int main()
 {
-  if (f() != 1) return 1;
-
   //Define the type of graph:
   //boost::adjacency_list is the 'Swiss army knife' graph
   typedef boost::adjacency_list
   <
-    //Store all out edges as a std::vector
+    //Store all edges as a std::vector
     boost::vecS,
     //Store all vertices in a std::vector
     boost::vecS,
@@ -31,36 +23,39 @@ int main()
     boost::property<boost::edge_name_t,std::string>
   > Graph;
 
-  Graph g;
+  Graph  g;
 
-  const auto v1 = boost::add_vertex(std::string("Mr. A"),g);
-  const auto v2 = boost::add_vertex(std::string("Mrs. B"),g);
-  const auto v3 = boost::add_vertex(std::string("Dr. C"),g);
-  const auto v4 = boost::add_vertex(std::string("Prof. D"),g);
-  boost::add_edge(v1,v2,std::string("Married"),g);
-  boost::add_edge(v2,v3,std::string("Lovers"),g);
-  boost::add_edge(v3,v4,std::string("Collegues"),g);
-  boost::add_edge(v1,v4,std::string("Roommates"),g);
+  std::vector<std::string> names;
+  names.push_back("Mr. A");
+  names.push_back("Mrs. B");
+  names.push_back("Dr. C");
+  names.push_back("Prof. D");
 
-  //Write graph to std::cout
-  boost::write_graphviz(std::cout,g);
+  const Graph::vertex_descriptor v0 = boost::add_vertex(names[0],g);
+  const Graph::vertex_descriptor v1 = boost::add_vertex(names[1],g);
+  const Graph::vertex_descriptor v2 = boost::add_vertex(names[2],g);
+  const Graph::vertex_descriptor v3 = boost::add_vertex(names[3],g);
+
+  std::vector<std::string> relations;
+  relations.push_back("Married");
+  relations.push_back("Lovers");
+  relations.push_back("Collegues");
+  relations.push_back("Roommates");
+
+  boost::add_edge(v0,v1,relations[0],g);
+  boost::add_edge(v1,v2,relations[1],g);
+  boost::add_edge(v2,v3,relations[2],g);
+  boost::add_edge(v0,v3,relations[3],g);
 
   //Writing graph to file
   {
     std::ofstream f("test.dot");
     //Problems:
-    //- All names are replaced by numbers
     //- All relationships are omitted
-    boost::write_graphviz(f,g);
-  }
-
-  {
-    std::ifstream f("test.dot");
-    Graph h;
-    boost::dynamic_properties dp(
-      boost::ignore_other_properties
-    );
-    boost::read_graphviz(f,h,dp);
-    boost::write_graphviz(std::cout,h);
+    boost::write_graphviz(
+      f,
+      g,
+      boost::make_label_writer(&(names[0])));
+    f.close();
   }
 }
