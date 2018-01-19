@@ -21,9 +21,9 @@ int main()
     boost::property<boost::vertex_name_t,std::string>,
     //All edges are relation of type std::string
     boost::property<boost::edge_name_t,std::string>
-  > Graph;
+  > graph;
 
-  Graph  g;
+  graph  g;
 
   std::vector<std::string> names;
   names.push_back("Mr. A");
@@ -31,10 +31,10 @@ int main()
   names.push_back("Dr. C");
   names.push_back("Prof. D");
 
-  const Graph::vertex_descriptor v0 = boost::add_vertex(names[0],g);
-  const Graph::vertex_descriptor v1 = boost::add_vertex(names[1],g);
-  const Graph::vertex_descriptor v2 = boost::add_vertex(names[2],g);
-  const Graph::vertex_descriptor v3 = boost::add_vertex(names[3],g);
+  const graph::vertex_descriptor v0 = boost::add_vertex(names[0],g);
+  const graph::vertex_descriptor v1 = boost::add_vertex(names[1],g);
+  const graph::vertex_descriptor v2 = boost::add_vertex(names[2],g);
+  const graph::vertex_descriptor v3 = boost::add_vertex(names[3],g);
 
   std::vector<std::string> relations;
   relations.push_back("Married");
@@ -47,6 +47,13 @@ int main()
   boost::add_edge(v2,v3,relations[2],g);
   boost::add_edge(v0,v3,relations[3],g);
 
+  //Writing graph to std::cout
+  boost::write_graphviz(
+    std::cout,
+    g,
+    boost::make_label_writer(&(names[0]))
+  );
+
   //Writing graph to file
   {
     std::ofstream f("test.dot");
@@ -55,7 +62,8 @@ int main()
     boost::write_graphviz(
       f,
       g,
-      boost::make_label_writer(&(names[0])));
+      boost::make_label_writer(&(names[0]))
+    );
     f.close();
   }
 }

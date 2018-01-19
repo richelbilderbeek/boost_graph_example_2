@@ -8,3 +8,16 @@ A [Boost.Graph example](https://github.com/richelbilderbeek/boost_graph_examples
 
 It defines a graph of person names and their relationships. 
 Then the graph is written to .dot file and plotted using KGraphViewer.
+
+```
+graph G {
+0[label="Mr. A"];
+1[label="Mrs. B"];
+2[label="Dr. C"];
+3[label="Prof. D"];
+0--1 ;
+1--2 ;
+2--3 ;
+0--3 ;
+}
+```
