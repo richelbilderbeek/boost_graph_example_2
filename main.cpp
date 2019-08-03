@@ -1,5 +1,5 @@
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
