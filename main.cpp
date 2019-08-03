@@ -1,9 +1,9 @@
-#pragma GCC diagnostic push
+
 
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
-#pragma GCC diagnostic pop
+
 int main()
 {
   //Define the type of graph:
