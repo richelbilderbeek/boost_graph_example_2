@@ -1,6 +1,6 @@
 #pragma GCC diagnostic push
 
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #pragma GCC diagnostic pop
